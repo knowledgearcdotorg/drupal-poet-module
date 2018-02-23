@@ -1,0 +1,32 @@
+<?php
+function poet_plugin_schema(){
+$schema['token_url']=[
+'description' => 'The table for url and token',
+'fields'=>[
+	'id'=>[
+		'description' => 'The primary identifier for a authorization',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+				
+		],
+	'frost_url'=>[
+		'description' => 'The url for frost api',
+		'type' => 'varchar',
+		'length' => '255',
+		'not null' => TRUE,
+		'default' => '', 
+		],
+	'token'=>[
+		'description' => 'The token for frost api',
+		'type' => 'varchar',
+		'length' => '255',
+		'not null' => TRUE,
+		'default' => '', 
+		]
+	],
+	'primary key' => ['id']
+];
+
+return $schema;
+}

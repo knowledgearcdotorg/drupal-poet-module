@@ -1,0 +1,7 @@
+poet_plugin.form:
+  path: '/poet-form'
+  defaults:
+    _title: 'Poet form'
+    _form: '\Drupal\poet_plugin\Form\PoetForm'
+  requirements:
+    _permission: 'access content'
