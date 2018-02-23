@@ -13,6 +13,9 @@ function drupal_poet_module_node_presave(Node $node)
 {
 // twig_var_dump($node->bundle());
     if ($node->isPublished()) {
+        $connection = \Drupal::database();
+        $query = $connection->query("SELECT frost_url, token FROM token_url ORDER BY id DESC LIMIT 1");
+        $result = $query->fetchAssoc();
         // The node has been published.
         $body = $node->get('body')->value;
         $summary = $node->get('body')->summary;
@@ -22,7 +25,7 @@ function drupal_poet_module_node_presave(Node $node)
         } else {
             $term_name = '';
         }
-        $token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtoYXJpczc3NkBnbWFpbC5jb20iLCJjbGllbnRfdG9rZW4iOiIxMGYwMjUxZC0xMWQyLTk0YzMtNTkzMi0xM2IwMGVhMDJlMjIiLCJpYXQiOjE1MTg5NDg4NjgsImV4cCI6MTUyMTcxMzY2OH0.sUtKbnQcLFa66pteo48ksW09Mr7lhX2c7Q7kJxzGTwI';
+        $token = $result['token'];
         $headers =
             [
                 'token' => $token,
@@ -39,7 +42,7 @@ function drupal_poet_module_node_presave(Node $node)
         ];
 
         $http = \Drupal::httpClient();
-        $response = $http->post('https://api.frost.po.et/works', [
+        $response = $http->post($result['frost_url'], [
             'body' => json_encode($data),
             'headers' => $headers
         ]);
