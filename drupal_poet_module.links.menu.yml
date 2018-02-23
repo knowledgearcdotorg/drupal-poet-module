@@ -1,0 +1,7 @@
+drupal_poet_module.admin:
+  title: 'Poet Module'
+  description: 'Manage settings for poet modules'
+  parent: system.admin_config_system
+  # menu_name: main
+  route_name: drupal_poet_module.settings
+  weight: 1

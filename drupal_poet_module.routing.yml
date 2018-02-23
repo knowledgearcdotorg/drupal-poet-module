@@ -5,3 +5,11 @@ drupal_poet_module.form:
     _form: '\Drupal\drupal_poet_module\Form\PoetForm'
   requirements:
     _permission: 'access content'
+
+drupal_poet_module.settings:
+  path: '/admin/config/poet-form'
+  defaults:
+    _form: '\Drupal\drupal_poet_module\Form\PoetForm'
+    _title: 'Poet Form'
+  requirements:
+    _permission: 'administer site config'
