@@ -1,4 +1,4 @@
-name: Poet Plugin
+name: Poet Module
 type: module
 description: This is a same module that is used as plugin in Joomla
 core: 8.x

@@ -1,5 +1,5 @@
 <?php
-function poet_plugin_schema(){
+function drupal_poet_module_schema(){
 $schema['token_url']=[
 'description' => 'The table for url and token',
 'fields'=>[
