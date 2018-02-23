@@ -1,0 +1,7 @@
+drupal_poet_module.form:
+  path: '/poet-form'
+  defaults:
+    _title: 'Poet form'
+    _form: '\Drupal\drupal_poet_module\Form\PoetForm'
+  requirements:
+    _permission: 'access content'
