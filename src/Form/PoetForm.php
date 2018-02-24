@@ -59,7 +59,7 @@ class PoetForm extends FormBase
         $url=$form_state->getValue('frost_url');
         $token=$form_state->getValue('token');
         $connection = \Drupal::database();
-        $connection->insert('drupal8.token_url')->fields(['frost_url' => $url,'token'=> $token])->execute();
+        $connection->insert('token_url')->fields(['frost_url' => $url,'token'=> $token])->execute();
 
     }
 
