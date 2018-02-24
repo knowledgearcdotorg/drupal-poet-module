@@ -43,7 +43,7 @@ class PoetForm extends FormBase
             '#type' => 'textfield', //you can find a list of available types in the form api
             '#title' => 'Frost URL',
             '#size' => 50,
-            '#value' => $frost_url,
+            '#placeholder'=>$frost_url,
             '#maxlength' => 1000,
             '#required' => TRUE, //make this field required
         );
@@ -51,7 +51,7 @@ class PoetForm extends FormBase
             '#type' => 'textfield', //you can find a list of available types in the form api
             '#title' => 'Frost Token',
             '#size' => 50,
-            '#value' => $token,
+            '#placeholder'=>$token,
             '#maxlength' => 1000,
             '#required' => TRUE, //make this field required
         );
