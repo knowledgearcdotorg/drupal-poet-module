@@ -31,27 +31,27 @@ class PoetForm extends FormBase
             $frost_url = $result['frost_url'];
 
         } else {
-            $frost_url = $result['frost_url'];
+            $frost_url = '';
         }
         if ($result['token']) {
             $token = $result['token'];
 
         } else {
-            $token = $result['token'];
+            $token = '';
         }
         $form['frost_url'] = array(
             '#type' => 'textfield', //you can find a list of available types in the form api
             '#title' => 'Frost URL',
             '#size' => 50,
-            '#default_value'=>$frost_url,
+            '#default_value' => $frost_url,
             '#maxlength' => 1000,
-            '#required' => TRUE, //make this field required
+            '#required' => FALSE, //Don't make this field required
         );
         $form['token'] = array(
             '#type' => 'textfield', //you can find a list of available types in the form api
             '#title' => 'Frost Token',
             '#size' => 50,
-            '#default_value'=>$token,
+            '#default_value' => $token,
             '#maxlength' => 1000,
             '#required' => TRUE, //make this field required
         );
@@ -81,8 +81,9 @@ class PoetForm extends FormBase
         $url = $form_state->getValue('frost_url');
         $token = $form_state->getValue('token');
         $connection = \Drupal::database();
-        $connection->insert('token_url')->fields(['frost_url' => $url, 'token' => $token])->execute();
-        drupal_set_message(t('Credentials Added Successfully'), 'status', TRUE);
+        if ($connection->insert('token_url')->fields(['frost_url' => $url, 'token' => $token])->execute()) {
+            drupal_set_message(t('Credentials Added Successfully'), 'status', TRUE);
+        }
     }
 
 }
