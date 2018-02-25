@@ -25,7 +25,7 @@ class PoetForm extends FormBase
     {
 
         $connection = \Drupal::database();
-        $query = $connection->query("SELECT frost_url, token FROM token_url ORDER BY id DESC LIMIT 1");
+        $query = $connection->query("SELECT frost_url, token FROM poet ORDER BY id DESC LIMIT 1");
         $result = $query->fetchAssoc();
         if ($result['frost_url']) {
             $frost_url = $result['frost_url'];
@@ -81,7 +81,7 @@ class PoetForm extends FormBase
         $url = $form_state->getValue('frost_url');
         $token = $form_state->getValue('token');
         $connection = \Drupal::database();
-        if ($connection->insert('token_url')->fields(['frost_url' => $url, 'token' => $token])->execute()) {
+        if ($connection->insert('poet')->fields(['frost_url' => $url, 'token' => $token])->execute()) {
             drupal_set_message(t('Credentials Added Successfully'), 'status', TRUE);
         }
     }

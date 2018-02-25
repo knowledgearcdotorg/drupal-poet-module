@@ -9,14 +9,14 @@
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 
-function drupal_poet_module_node_presave(Node $node)
+function poet_node_presave(Node $node)
 {
 // twig_var_dump($node->bundle());
     if ($node->type = 'article') {
         if ($node->isPublished()) {
             // The node has been published.
             $connection = \Drupal::database();
-            $query = $connection->query("SELECT frost_url, token FROM token_url ORDER BY id DESC LIMIT 1");
+            $query = $connection->query("SELECT frost_url, token FROM poet ORDER BY id DESC LIMIT 1");
             $result = $query->fetchAssoc();
             if ($result['frost_url'] != '') {
                 $frost_url = $result['frost_url'];
@@ -66,12 +66,12 @@ function drupal_poet_module_node_presave(Node $node)
 
 }
 
-function drupal_poet_module_node_view(array &$build, Node $node, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode)
+function poet_node_view(array &$build, Node $node, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode)
 {
     if ($node->field_workid) {
         if ($node->field_workid->value != '') {
             $build['signature'] = [
-                '#theme' => 'drupal_poet_module_signature',
+                '#theme' => 'poet_signature',
                 '#work_id' => $node->field_workid->value,
                 '#weight' => 10,
             ];
@@ -81,23 +81,23 @@ function drupal_poet_module_node_view(array &$build, Node $node, \Drupal\Core\En
     }
 }
 
-function drupal_poet_module_theme()
+function poet_theme()
 {
     return [
-        'drupal_poet_module_signature' => [
+        'poet_signature' => [
             'variables' => ['work_id' => NULL
             ],
         ],
     ];
 }
 
-function drupal_poet_module_node_update(Node $node)
+function poet_node_update(Node $node)
 {
     if ($node->type == 'article') {
         if ($node->isPublished()) {
             // The node has been published.
             $connection = \Drupal::database();
-            $query = $connection->query("SELECT frost_url, token FROM token_url ORDER BY id DESC LIMIT 1");
+            $query = $connection->query("SELECT frost_url, token FROM poet ORDER BY id DESC LIMIT 1");
             $result = $query->fetchAssoc();
             if ($result['frost_url'] != '') {
                 $frost_url = $result['frost_url'];

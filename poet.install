@@ -1,6 +1,6 @@
 <?php
-function drupal_poet_module_schema(){
-$schema['token_url']=[
+function poet_schema(){
+$schema['poet']=[
 'description' => 'The table for url and token',
 'fields'=>[
 	'id'=>[
@@ -14,7 +14,7 @@ $schema['token_url']=[
 		'description' => 'The url for frost api',
 		'type' => 'varchar',
 		'length' => '255',
-		'not null' => TRUE,
+		'not null' => FALSE,
 		'default' => '', 
 		],
 	'token'=>[
