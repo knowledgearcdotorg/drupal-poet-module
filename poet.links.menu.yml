@@ -1,7 +1,7 @@
-drupal_poet_module.admin:
+poet.admin:
   title: 'Po.et'
   description: 'Manage Po.et integration settings.'
   parent: system.admin_config_system
   # menu_name: main
-  route_name: drupal_poet_module.settings
+  route_name: poet.settings
   weight: 1

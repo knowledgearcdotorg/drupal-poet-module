@@ -1,0 +1,15 @@
+poet.form:
+  path: '/poet-form'
+  defaults:
+    _title: 'Poet form'
+    _form: '\Drupal\Poet\Form\PoetForm'
+  requirements:
+    _permission: 'access content'
+
+poet.settings:
+  path: '/admin/config/poet-form'
+  defaults:
+    _form: '\Drupal\Poet\Form\PoetForm'
+    _title: 'Poet Form'
+  requirements:
+    _permission: 'administer site config'

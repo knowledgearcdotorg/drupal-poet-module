@@ -6,7 +6,7 @@
  * Time: 2:43 PM
  */
 
-namespace Drupal\drupal_poet_module\Form;
+namespace Drupal\poet\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,7 +15,7 @@ class PoetForm extends FormBase
 {
     public function getFormId()
     {
-        return 'drupal_poet_module_form';
+        return 'poet_form';
     }
 
     /**
