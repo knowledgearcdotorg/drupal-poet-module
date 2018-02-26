@@ -16,7 +16,7 @@ function poet_node_presave(Node $node)
         if ($node->isPublished()) {
             // The node has been published.
             $connection = \Drupal::database();
-            $table=$connection->tablePrefix().'poet';
+            $table = $connection->tablePrefix() . 'poet';
             $query = $connection->query("SELECT frost_url, token FROM $table ORDER BY id DESC LIMIT 1");
             $result = $query->fetchAssoc();
             if ($result['frost_url'] != '') {
@@ -34,34 +34,38 @@ function poet_node_presave(Node $node)
             } else {
                 $term_name = '';
             }
+
             $token = $result['token'];
-            $headers =
-                [
-                    'token' => $token,
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json'
+            if ($token != '' && $token != NULL) {
+                $headers =
+                    [
+                        'token' => $token,
+                        'Content-Type' => 'application/json',
+                        'Accept' => 'application/json'
+                    ];
+                $data = [
+                    'name' => $node->getTitle(),
+                    'content' => $body,
+                    'author' => $node->getOwner()->getAccountName(),
+                    'dateCreated' => date(DATE_ISO8601, $node->getCreatedTime()),
+                    'datePublished' => date(DATE_ISO8601, $node->getCreatedTime()),
+                    'tags' => $term_name
                 ];
-            $data = [
-                'name' => $node->getTitle(),
-                'content' => $body,
-                'author' => $node->getOwner()->getAccountName(),
-                'dateCreated' => date(DATE_ISO8601, $node->getCreatedTime()),
-                'datePublished' => date(DATE_ISO8601, $node->getCreatedTime()),
-                'tags' => $term_name
-            ];
 
-            $http = \Drupal::httpClient();
-            $response = $http->post($frost_url . '/works', [
-                'body' => json_encode($data),
-                'headers' => $headers
-            ]);
-            if ($response->getStatusCode() == 200) {
-                $body = json_decode($response->getBody());
-                $node->set('field_workid', $body->workId);
+                $http = \Drupal::httpClient();
+                $response = $http->post($frost_url . '/works', [
+                    'body' => json_encode($data),
+                    'headers' => $headers
+                ]);
+                if ($response->getStatusCode() == 200) {
+                    $body = json_decode($response->getBody());
+                    $node->set('field_workid', $body->workId);
 
+                }
+
+            } else {
+                drupal_set_message("Please provide valid token configurations for Frost API", 'warning', FALSE);
             }
-
-
         }
     }
 
@@ -71,9 +75,12 @@ function poet_node_view(array &$build, Node $node, \Drupal\Core\Entity\Display\E
 {
     if ($node->field_workid) {
         if ($node->field_workid->value != '') {
+            global $base_root, $base_path;
+            $path = $base_root . $base_path . drupal_get_path('module', 'poet') . '/images/';
             $build['signature'] = [
                 '#theme' => 'poet_signature',
                 '#work_id' => $node->field_workid->value,
+                '#pathToModule' => $path,
                 '#weight' => 10,
             ];
 
@@ -86,8 +93,11 @@ function poet_theme()
 {
     return [
         'poet_signature' => [
-            'variables' => ['work_id' => NULL
-            ],
+            'variables' => [
+                'work_id' => NULL,
+                'pathToModule' => NULL
+            ]
+
         ],
     ];
 }
@@ -98,7 +108,7 @@ function poet_node_update(Node $node)
         if ($node->isPublished()) {
             // The node has been published.
             $connection = \Drupal::database();
-            $table=$connection->tablePrefix().'poet';
+            $table = $connection->tablePrefix() . 'poet';
             $query = $connection->query("SELECT frost_url, token FROM $table ORDER BY id DESC LIMIT 1");
             $result = $query->fetchAssoc();
             if ($result['frost_url'] != '') {
@@ -119,30 +129,34 @@ function poet_node_update(Node $node)
             }
 
             $token = $result['token'];
-            $headers =
-                [
-                    'token' => $token,
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json'
+            if ($token != '' && $token != NULL) {
+                $headers =
+                    [
+                        'token' => $token,
+                        'Content-Type' => 'application/json',
+                        'Accept' => 'application/json'
+                    ];
+                $data = [
+                    'name' => $node->getTitle(),
+                    'content' => $body,
+                    'author' => $node->getOwner()->getAccountName(),
+                    'dateCreated' => date(DATE_ISO8601, $node->getCreatedTime()),
+                    'datePublished' => date(DATE_ISO8601, $node->getCreatedTime()),
+                    'tags' => $term_name
                 ];
-            $data = [
-                'name' => $node->getTitle(),
-                'content' => $body,
-                'author' => $node->getOwner()->getAccountName(),
-                'dateCreated' => date(DATE_ISO8601, $node->getCreatedTime()),
-                'datePublished' => date(DATE_ISO8601, $node->getCreatedTime()),
-                'tags' => $term_name
-            ];
 
-            $http = \Drupal::httpClient();
-            $response = $http->post($frost_url . '/works', [
-                'body' => json_encode($data),
-                'headers' => $headers
-            ]);
-            if ($response->getStatusCode() == 200) {
-                $body = json_decode($response->getBody());
-                $node->set('field_workid', $body->workId);
+                $http = \Drupal::httpClient();
+                $response = $http->post($frost_url . '/works', [
+                    'body' => json_encode($data),
+                    'headers' => $headers
+                ]);
+                if ($response->getStatusCode() == 200) {
+                    $body = json_decode($response->getBody());
+                    $node->set('field_workid', $body->workId);
 
+                }
+            } else {
+                drupal_set_message("Please provide valid token configurations for Frost API", 'warning', FALSE);
             }
 
 

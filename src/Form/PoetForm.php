@@ -25,7 +25,7 @@ class PoetForm extends FormBase
     {
 
         $connection = \Drupal::database();
-        $table=$connection->tablePrefix().'poet';
+        $table = $connection->tablePrefix() . 'poet';
         $query = $connection->query("SELECT frost_url, token FROM $table ORDER BY id DESC LIMIT 1");
         $result = $query->fetchAssoc();
         if ($result['frost_url']) {
